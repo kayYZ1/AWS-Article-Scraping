@@ -1,6 +1,6 @@
 # Scraping app
 
-Aplikacja składa się z dwóch modułów: klienta oraz serverless. W przypadku modułu klienta został użyty głównie React oraz Typescript, natomiast moduł serverless został zbudowany w języku Javascript za pomocą biblioteki Puppeteer oraz AWS Lamdbda.
+Aplikacja składa się z dwóch modułów: client oraz serverless. W przypadku modułu klienta został użyty głównie React oraz Typescript, natomiast moduł serverless został zbudowany w języku Javascript za pomocą biblioteki Puppeteer oraz AWS Lamdbda.
 Celem aplikacji jest zescrapowanie artykułów według podanej przez użytkownika frazy. Wykorzystane zostały do tego trzy serwisy informacyjne:
 - https://www.forbes.pl/
 - https://www.polityka.pl/
