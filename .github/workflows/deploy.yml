@@ -16,7 +16,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  VITE_LAMBDA_API: ${{ secret.VITE_LAMBDA_API }}
+  VITE_LAMBDA_API: ${{ secrets.VITE_LAMBDA_API }}
 
 jobs:
   deploy:
