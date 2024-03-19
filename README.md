@@ -14,7 +14,7 @@ Użytkownik może wybrać z których serwisów chce przeczytać artykuły wybier
 cd client
 ```
 ```bash
-npm install
+npm install or bun install
 ```
 ```bash
 npm run dev
