@@ -1,0 +1,40 @@
+.search {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.articles {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.cardImg {
+  height: 10rem;
+}
+
+/* --- BREAKPOINTS --- */
+
+@media screen and (max-width: 1400px) {
+  .articles {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5em;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .articles {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5em;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .articles {
+    grid-template-columns: 1fr;
+    gap: 0.5em;
+  }
+}
