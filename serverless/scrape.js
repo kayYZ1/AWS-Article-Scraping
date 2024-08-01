@@ -16,55 +16,36 @@ async function scrape(searchValue, websites) {
     ignoreHTTPSErrors: true,
   });
 
-  //Locally
-  /*const browser = await puppeteer.launch({
-    headless: "new",
-    executablePath: "C:/Program Files/Google/Chrome/Application/chrome",
-  });*/
+  const scrapeAndConcatenate = async (sources, searchValue, browser) => {
+    const results = await Promise.all(sources.map(source => source(searchValue, browser)));
+    return results.flat();
+  };
 
-  let wPolityce, polityka, forbes, articles;
+  try {
+    let articles = [];
+    const sourceMap = {
+      "Forbes": scrapeForbes,
+      "Polityka": scrapePolityka,
+      "wPolityce": scrapeWPolityce
+    };
 
-  if (websites.length === 2) {
-    if (websites.includes("Forbes") && websites.includes("Polityka")) {
-      forbes = await scrapeForbes(searchValue, browser);
-      polityka = await scrapePolityka(searchValue, browser);
-
-      articles = polityka.concat(forbes);
-      return articles ? articles : [];
-    } else if (
-      websites.includes("wPolityce") &&
-      websites.includes("Polityka")
-    ) {
-      wPolityce = await scrapeWPolityce(searchValue, browser);
-      polityka = await scrapePolityka(searchValue, browser);
-
-      articles = wPolityce.concat(polityka);
-      return articles ? articles : [];
+    if (websites.length === 2) {
+      if (websites.includes("Forbes") && websites.includes("Polityka")) {
+        articles = await scrapeAndConcatenate([scrapeForbes, scrapePolityka], searchValue, browser);
+      } else if (websites.includes("wPolityce") && websites.includes("Polityka")) {
+        articles = await scrapeAndConcatenate([scrapeWPolityce, scrapePolityka], searchValue, browser);
+      } else {
+        articles = await scrapeAndConcatenate([scrapeForbes, scrapeWPolityce], searchValue, browser);
+      }
+    } else if (websites.length === 1) {
+      articles = await scrapeAndConcatenate([sourceMap[websites[0]]], searchValue, browser);
     } else {
-      forbes = await scrapeForbes(searchValue, browser);
-      wPolityce = await scrapeWPolityce(searchValue, browser);
-
-      articles = wPolityce.concat(forbes);
-      return articles ? articles : [];
+      articles = await scrapeAndConcatenate([scrapeWPolityce, scrapePolityka, scrapeForbes], searchValue, browser);
     }
-  } else if (websites.length === 1) {
-    if (websites.includes("Forbes")) {
-      forbes = await scrapeForbes(searchValue, browser);
-      return forbes ? forbes : [];
-    } else if (websites.includes("Polityka")) {
-      polityka = await scrapePolityka(searchValue, browser);
-      return polityka ? polityka : [];
-    } else {
-      wPolityce = await scrapeWPolityce(searchValue, browser);
-      return wPolityce ? wPolityce : [];
-    }
-  } else {
-    wPolityce = await scrapeWPolityce(searchValue, browser);
-    polityka = await scrapePolityka(searchValue, browser);
-    forbes = await scrapeForbes(searchValue, browser);
 
-    articles = wPolityce.concat(polityka, forbes);
-    return articles;
+    return articles.length ? articles : [];
+  } finally {
+    await browser.close();
   }
 }
 
