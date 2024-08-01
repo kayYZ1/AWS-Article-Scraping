@@ -7,7 +7,6 @@ const {
 } = require("./functions");
 
 async function scrape(searchValue, websites) {
-  //AWS
   const browser = await puppeteer.launch({
     args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
     defaultViewport: chromium.defaultViewport,
